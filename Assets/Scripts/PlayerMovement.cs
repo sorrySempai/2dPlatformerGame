@@ -3,8 +3,17 @@
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 20f;
-    public float jumpforce = 1f;
+    public float jumpForce = 1f;
+    private float moveInput;
+
     private Rigidbody2D rb;
+    
+    private bool isGrounded;
+    public Transform groundCheck;
+    public float checkRadius;
+    public LayerMask whatIsGround;
+
+
 
     void Start()
     {
@@ -13,10 +22,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        rb.MovePosition(rb.position + Vector2.right * moveX * Time.deltaTime * speed);
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.velocity = Vector2.up * jumpForce;
+        }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            rb.AddForce(Vector2.up * 8000);
+    private void FixedUpdate()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+
+        moveInput = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 }

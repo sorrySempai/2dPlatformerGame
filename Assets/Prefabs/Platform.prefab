@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2702356184904049377}
-  m_Layer: 0
+  - component: {fileID: 918329494556721209}
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8204675266801658737}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5033138, y: 3.9333844, z: 0}
+  m_LocalPosition: {x: 2.26, y: 3.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4049047941260807891}
@@ -33,6 +34,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &918329494556721209
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204675266801658737}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -2.5, y: -3.38}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.71, y: 0.88}
+  m_EdgeRadius: 0
 --- !u!1001 &6304203057530121298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105,10 +132,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5876673404598784000, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5ed07f270f04621418099fe2e1861a1c,
+        type: 2}
+    - target: {fileID: 5876673404598784000, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6363559237667743962, guid: 191af1b28bec5ab408ad63e409bbf6be,
         type: 3}
       propertyPath: m_Name
       value: Main terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363559237667743962, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 191af1b28bec5ab408ad63e409bbf6be, type: 3}
@@ -190,10 +233,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5876673404598784000, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5ed07f270f04621418099fe2e1861a1c,
+        type: 2}
+    - target: {fileID: 5876673404598784000, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6363559237667743962, guid: 191af1b28bec5ab408ad63e409bbf6be,
         type: 3}
       propertyPath: m_Name
       value: Main terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363559237667743962, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 191af1b28bec5ab408ad63e409bbf6be, type: 3}
@@ -275,10 +334,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5876673404598784000, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5ed07f270f04621418099fe2e1861a1c,
+        type: 2}
+    - target: {fileID: 5876673404598784000, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6363559237667743962, guid: 191af1b28bec5ab408ad63e409bbf6be,
         type: 3}
       propertyPath: m_Name
       value: Main terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363559237667743962, guid: 191af1b28bec5ab408ad63e409bbf6be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 191af1b28bec5ab408ad63e409bbf6be, type: 3}
