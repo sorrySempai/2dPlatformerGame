@@ -6,7 +6,7 @@ Sprite:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Terrain (16x16)_6
+  m_Name: Mini Platform
   m_Rect:
     serializedVersion: 2
     x: 112
@@ -22,7 +22,7 @@ Sprite:
   m_AtlasName: 
   m_PackingTag: 
   m_RenderDataKey:
-    fc584d329b77b9545b9c9c8bb829e553: -7517053698926566003
+    5ed07f270f04621418099fe2e1861a1c: 21300000
   m_AtlasTags: []
   m_SpriteAtlas: {fileID: 0}
   m_RD:
