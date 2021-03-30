@@ -6,7 +6,7 @@ Sprite:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Apple_0
+  m_Name: Apple
   m_Rect:
     serializedVersion: 2
     x: 0
@@ -22,7 +22,7 @@ Sprite:
   m_AtlasName: 
   m_PackingTag: 
   m_RenderDataKey:
-    1ddc9afd21fec77489b1248d18f31b68: 7293598183456022363
+    2fa24181c8c10b64f88583903c34ce78: 21300000
   m_AtlasTags: []
   m_SpriteAtlas: {fileID: 0}
   m_RD:

@@ -3,29 +3,35 @@
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 20f;
-    public float jumpForce = 1f;
+    public float jumpForce = 1900f;
     private float moveInput;
 
     private Rigidbody2D rb;
-    
+
     private bool isGrounded;
     public Transform groundCheck;
     public float checkRadius;
     public LayerMask whatIsGround;
+    public float spawnX, spawnY;
+
+
 
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spawnX = transform.position.x;
+        spawnY = transform.position.y;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
-            rb.velocity = Vector2.up * jumpForce;
+            rb.AddForce(new Vector2(0f, jumpForce));
         }
+        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 
     private void FixedUpdate()
@@ -33,6 +39,22 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
         moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.name == "Apple")
+        {
+            Destroy(col.gameObject);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.name == "Saw" || col.gameObject.name == "Death Place" || col.gameObject.name == "Spikes")
+        {
+            transform.position = new Vector3(spawnX, spawnY, transform.position.z);
+        }
+    }
+
 }
