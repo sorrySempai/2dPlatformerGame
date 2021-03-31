@@ -14,10 +14,6 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask whatIsGround;
     public float spawnX, spawnY;
 
-
-
-
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.position = new Vector3(spawnX, spawnY, transform.position.z);
         }
+
     }
 
 }
