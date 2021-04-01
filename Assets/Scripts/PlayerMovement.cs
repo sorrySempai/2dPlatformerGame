@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -49,7 +50,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (col.gameObject.name == "Saw" || col.gameObject.name == "Death Place" || col.gameObject.name == "Spikes")
         {
-            transform.position = new Vector3(spawnX, spawnY, transform.position.z);
+            //transform.position = new Vector3(spawnX, spawnY, transform.position.z);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        if (col.gameObject.tag == "Enemy")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
     }
