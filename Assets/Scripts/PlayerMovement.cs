@@ -1,22 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : Unit
 {
-    public float speed = 20f;
-    public float jumpForce = 1900f;
-    private float moveInput;
+    [SerializeField] private float speed = 20f;
+    [SerializeField] private float jumpForce = 1900f;
+    [SerializeField] private int lives = 3;
+    [SerializeField] private float hurtForce = 10f;
 
-    private Rigidbody2D rb;
+    public int Lives
+    {
+        get { return lives; }
+        set
+        {
+            if (value < 3)
+                lives = value;
+            livesBar.Refresh();
+        }
+    }
+    private LivesBar livesBar;
 
     private bool isGrounded;
+
+    private Rigidbody2D rb;
+    private SpriteRenderer sprite;
+    public Vector2 moveVector;
+
     public Transform groundCheck;
-    public float checkRadius;
-    public LayerMask whatIsGround;
     public float spawnX, spawnY;
+    private bool isDead;
 
     void Start()
     {
+        livesBar = FindObjectOfType<LivesBar>();
         rb = GetComponent<Rigidbody2D>();
         spawnX = transform.position.x;
         spawnY = transform.position.y;
@@ -24,41 +40,84 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
+        Move();
+        Jump();
+        if (lives <= 0)
         {
-            rb.AddForce(new Vector2(0f, jumpForce));
+            Dead();
         }
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+    }
+
+    private void Move()
+    {
+        moveVector.x = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(moveVector.x * speed, rb.velocity.y);
+    }
+
+    private void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.AddForce(Vector2.up * jumpForce);
+        }
+    }
+    private void CheckGround()
+    {
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 1.3f);
+        isGrounded = collider.Length > 1;
+    }
+
+    public override void ReceiveDamage(int dmg)
+    {
+        Lives -= dmg;
     }
 
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-
-        moveInput = Input.GetAxis("Horizontal");
+        CheckGround();
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.name == "Apple")
         {
             Destroy(col.gameObject);
         }
+        
+        if (col.gameObject.tag == "Enemy")
+        {
+            if (!isGrounded)
+            {
+                Destroy(col.gameObject);
+            }
+            else
+            {
+                if (col.gameObject.transform.position.x > transform.position.x)
+                {
+                    rb.velocity = new Vector2(-hurtForce, rb.velocity.y);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(hurtForce, rb.velocity.y);
+                }
+            }
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.name == "Saw" || col.gameObject.name == "Death Place" || col.gameObject.name == "Spikes")
+       if (col.gameObject.name == "Death Place")
         {
-            //transform.position = new Vector3(spawnX, spawnY, transform.position.z);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Dead();
         }
+    }
 
-        if (col.gameObject.tag == "Enemy")
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
+    public void Dead()
+    {
+        if (isDead) { return; }
+        isDead = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }

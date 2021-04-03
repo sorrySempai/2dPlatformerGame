@@ -4,47 +4,62 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+	[SerializeField] private List<Transform> points;
+	[SerializeField] private float speed;
 
-	private Rigidbody2D rb;
-	public float speed = 7f;
-	float direction = -1f;
+	private int currentIndex;
+	private Vector2 currentPoint;
+	private bool walking;
+	private bool isDead;
 
-	public float distancePatrol;
-	private bool patrol = true;
-
-	private float minDistance;
-	private float maxDistance;
-	void Start()
-	{
-		rb = GetComponent<Rigidbody2D>();
-		minDistance = transform.position.x - distancePatrol;
-		maxDistance = transform.position.x + distancePatrol;
-	}
-	void Update()
-	{
-		if (patrol)
-        {
-			Patrol();
-        }
-		if (transform.position.y < -7)
-        {
-			Destroy(this.gameObject);
-        }
-	}
-
-	private void Patrol()
+    private void Start()
     {
-		transform.Translate(transform.right * speed * Time.deltaTime);
-		if (transform.position.x > maxDistance)
-        {
-			speed *= -1;
-			transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-		if (transform.position.x < minDistance)
-		{
-			speed *= -1;
-			transform.rotation = Quaternion.Euler(0, 0, 0);
-		}
+		currentPoint = points[0].position;
+		walking = true;
+
+		ChooseDirection();
+
 	}
 
+    private void Update()
+    {
+        if (isDead) { return; }
+
+		Walk();
+    }
+
+	private void ChooseNextPoint()
+    {
+		if (currentIndex + 1 < points.Count)
+        {
+			currentIndex += 1;
+        }
+        else
+        {
+			currentIndex = 0;
+        }
+
+		currentPoint = points[currentIndex].position;
+		ChooseDirection();
+
+	}
+
+	private void ChooseDirection()
+    {
+		GetComponent<SpriteRenderer>().flipX = currentPoint.x < transform.position.x;
+    }
+
+	private void Walk()
+    {
+		if (walking)
+        {
+			float step = speed * Time.deltaTime;
+			transform.position = Vector2.MoveTowards(transform.position, currentPoint, step);
+
+			if (Vector3.Distance(transform.position, currentPoint) < 0.3f)
+            {
+				ChooseNextPoint();
+            }
+        }
+    }
 }
