@@ -2,64 +2,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyController : MonoBehaviour
 {
-	[SerializeField] private List<Transform> points;
-	[SerializeField] private float speed;
+    [SerializeField] private float leftPoint;
+    [SerializeField] private float rightPoint;
 
-	private int currentIndex;
-	private Vector2 currentPoint;
-	private bool walking;
-	private bool isDead;
+    [SerializeField] private float jumpLength = 10f;
+    [SerializeField] private float jumpHeight = 15f;
+    [SerializeField] private LayerMask ground;
+    [SerializeField] private int dmg = 1;
+
+    private Rigidbody2D rb;
+    private Collider2D coll;
+    private SpriteRenderer sr;
+    private AudioSource deathSound;
+
+    private bool facingLeft= true;
 
     private void Start()
     {
-		currentPoint = points[0].position;
-		walking = true;
+        rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
+        sr = GetComponent<SpriteRenderer>();
+        deathSound = GetComponent<AudioSource>();
+    }
 
-		ChooseDirection();
-
-	}
 
     private void Update()
     {
-        if (isDead) { return; }
-
-		Walk();
+        Move();
     }
 
-	private void ChooseNextPoint()
+
+    private void Move()
     {
-		if (currentIndex + 1 < points.Count)
+        if (facingLeft)
         {
-			currentIndex += 1;
+            if (transform.position.x > leftPoint)
+            {
+
+                if (transform.localScale.x < 0)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+                }
+
+                if (coll.IsTouchingLayers(ground))
+                {
+                    rb.velocity = new Vector2(-jumpLength, jumpHeight);
+                }
+            }
+            else
+            {
+                facingLeft = false;
+            }
         }
         else
         {
-			currentIndex = 0;
-        }
-
-		currentPoint = points[currentIndex].position;
-		ChooseDirection();
-
-	}
-
-	private void ChooseDirection()
-    {
-		GetComponent<SpriteRenderer>().flipX = currentPoint.x < transform.position.x;
-    }
-
-	private void Walk()
-    {
-		if (walking)
-        {
-			float step = speed * Time.deltaTime;
-			transform.position = Vector2.MoveTowards(transform.position, currentPoint, step);
-
-			if (Vector3.Distance(transform.position, currentPoint) < 0.3f)
+            if (transform.position.x < rightPoint)
             {
-				ChooseNextPoint();
+
+                if (transform.localScale.x > 0)
+                {
+                    transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+                }
+
+                if (coll.IsTouchingLayers(ground))
+                {
+                    rb.velocity = new Vector2(jumpLength, jumpHeight);
+                }
+            }
+            else
+            {
+                facingLeft = true;
             }
         }
+       
     }
+
+    
+    public void Death()
+    {
+        deathSound.Play();
+        Destroy(this.gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        Unit unit = col.GetComponent<Unit>();
+
+        if (unit && unit is PlayerMovement)
+        {
+            unit.ReceiveDamage(dmg);
+        }
+    }
+
 }

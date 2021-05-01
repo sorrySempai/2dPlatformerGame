@@ -7,7 +7,7 @@ TagManager:
   - MovingPlatform
   - Wall
   - Enemy
-  - EnemyDeath
+  - Collectable
   layers:
   - Default
   - TransparentFX
