@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerMovement : Unit
 {
@@ -9,8 +10,13 @@ public class PlayerMovement : Unit
     [SerializeField] private int lives = 3;
     [SerializeField] private LayerMask ground;
     [SerializeField] private int apples = 0;
-    [SerializeField] private Text appleText;
+    [SerializeField] private TextMeshProUGUI appleText;
     [SerializeField] private float hurtForce = 5f;
+    [SerializeField] private AudioSource appleSound;
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private Sprite spriteNormal;
+    [SerializeField] private Sprite spriteHurt;
+    [SerializeField] private Sprite spriteDead;
 
     public int Lives
     {
@@ -30,7 +36,7 @@ public class PlayerMovement : Unit
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Collider2D coll;
-    private AudioSource jumpSound;
+    
 
     private bool isGrounded;
     private bool isDead;
@@ -44,7 +50,7 @@ public class PlayerMovement : Unit
         livesBar = FindObjectOfType<LivesBar>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
-        jumpSound = GetComponent<AudioSource>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
         spawnX = transform.position.x;
         spawnY = transform.position.y;
     }
@@ -53,6 +59,8 @@ public class PlayerMovement : Unit
     {
         if (state != State.hurt)
         {
+            if (sprite.sprite == spriteHurt)
+                sprite.sprite = spriteNormal;
             Move();
         }
         Jump();
@@ -73,8 +81,8 @@ public class PlayerMovement : Unit
         if (Input.GetButtonDown("Jump") && isGrounded && coll.IsTouchingLayers(ground))
         {
             state = State.jumping;
-            rb.AddForce(Vector2.up * jumpForce);
             jumpSound.Play();
+            rb.AddForce(Vector2.up * jumpForce);
         }
     }
     private void CheckGround()
@@ -97,6 +105,7 @@ public class PlayerMovement : Unit
     {
         if (col.tag == "Collectable")
         {
+            appleSound.Play();
             Destroy(col.gameObject);
             apples++;
             appleText.text = apples.ToString();
@@ -116,13 +125,14 @@ public class PlayerMovement : Unit
            EnemyController ec = col.gameObject.GetComponent<EnemyController>(); 
            if (state == State.falling)
            {
-               ec.Death();
+               ec.DeathAction();
                state = State.jumping;
                rb.AddForce(Vector2.up * jumpForce);
             }
            else
            {
                 state = State.hurt;
+                sprite.sprite = spriteHurt;
                 if (col.gameObject.transform.position.x > transform.position.x)
                 {
                     // Враг справа от меня --> я отлетаю влево
@@ -140,6 +150,7 @@ public class PlayerMovement : Unit
 
     public void Dead()
     {
+        sprite.sprite = spriteDead;
         if (isDead) { return; }
         isDead = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

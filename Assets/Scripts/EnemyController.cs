@@ -81,9 +81,16 @@ public class EnemyController : MonoBehaviour
     }
 
     
+    public void DeathAction()
+    {
+        GetComponent<Collider2D>().enabled = false;
+        sr.flipY = true;
+        rb.velocity = new Vector2(Random.Range(-10, 10), Random.Range(-10, -1));
+        Invoke("Death", 2f);
+    }
+
     public void Death()
     {
-        deathSound.Play();
         Destroy(this.gameObject);
     }
 
@@ -94,6 +101,7 @@ public class EnemyController : MonoBehaviour
         if (unit && unit is PlayerMovement)
         {
             unit.ReceiveDamage(dmg);
+            deathSound.Play();
         }
     }
 
