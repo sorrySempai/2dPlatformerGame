@@ -85,7 +85,7 @@ public class EnemyController : MonoBehaviour
     {
         GetComponent<Collider2D>().enabled = false;
         sr.flipY = true;
-        rb.velocity = new Vector2(Random.Range(-10, 10), Random.Range(-10, -1));
+        rb.velocity = new Vector2(Random.Range(-10, 10), Random.Range(-10, -5));
         Invoke("Death", 2f);
     }
 

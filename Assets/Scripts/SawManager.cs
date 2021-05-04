@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SawManager : MonoBehaviour
+public class SawManager : ObstacleManager
 {
     void Update()
     {
