@@ -19,7 +19,7 @@ EditorBuildSettings:
     guid: 1727167bc631e6e43be0d9d31316d096
   - enabled: 1
     path: Assets/Scenes/lvl5.unity
-    guid: d880caa46bd42294d94761d404ed9c04
+    guid: 7788fcd623df9ab4c8558648ef484d6f
   - enabled: 1
     path: Assets/Scenes/EndScene.unity
     guid: e2becf1c681f550469b78cd36987b055

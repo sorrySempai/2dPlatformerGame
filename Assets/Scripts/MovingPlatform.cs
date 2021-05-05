@@ -15,6 +15,11 @@ public class MovingPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Move();
+    }
+
+    private void Move()
+    {
         if (transform.position.x > rightPoint)
         {
             movingRight = false;
@@ -32,7 +37,5 @@ public class MovingPlatform : MonoBehaviour
         {
             transform.position = new Vector2(transform.position.x - speed * Time.deltaTime, transform.position.y);
         }
-
-
     }
 }
