@@ -12,6 +12,7 @@ public class PlayerMovement : Unit
     [SerializeField] private int apples = 0;
     [SerializeField] private TextMeshProUGUI appleText;
     [SerializeField] private float hurtForce = 5f;
+    [SerializeField] private float hurtForceBoss = 300f;
     [SerializeField] private AudioSource appleSound;
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private Sprite spriteNormal;
@@ -146,6 +147,33 @@ public class PlayerMovement : Unit
             }
           
        }
+        if (col.gameObject.CompareTag("Boss"))
+        {
+
+            BossScript bs = col.gameObject.GetComponent<BossScript>();
+            if (state == State.falling)
+            {
+                bs.GetDamage();
+                state = State.jumping;
+                rb.AddForce(Vector2.up * jumpForce * 0.9f);
+            }
+            else
+            {
+                state = State.hurt;
+                sprite.sprite = spriteHurt;
+                if (col.gameObject.transform.position.x > transform.position.x)
+                {
+                    // Враг справа от меня --> я отлетаю влево
+                    rb.velocity = new Vector2(-hurtForceBoss, rb.velocity.y);
+                }
+                else
+                {
+                    // Враг слева от меня --> я отлетаю вправо
+                    rb.velocity = new Vector2(hurtForceBoss, rb.velocity.y);
+                }
+            }
+
+        }
     }
 
     public void Dead()

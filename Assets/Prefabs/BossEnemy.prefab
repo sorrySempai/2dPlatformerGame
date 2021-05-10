@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5610951220475126694}
   - component: {fileID: 542292487828236095}
   m_Layer: 0
-  m_Name: Enemy2
+  m_Name: BossEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ed0b8bca080c1449ed32ac3e455f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPoint: 68.28
-  rightPoint: 75.95
+  leftPoint: 10
+  rightPoint: 45
   jumpLength: 5
   jumpHeight: 7
   ground:
