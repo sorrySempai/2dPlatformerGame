@@ -6,13 +6,12 @@ using TMPro;
 public class PlayerMovement : Unit
 {
     [SerializeField] private float speed = 20f;
+    [SerializeField] private float speedNormal = 8f;
     [SerializeField] private float jumpForce = 1900f;
     [SerializeField] private int lives = 3;
     [SerializeField] private LayerMask ground;
     [SerializeField] private int apples = 0;
     [SerializeField] private TextMeshProUGUI appleText;
-    [SerializeField] private float hurtForce = 5f;
-    [SerializeField] private float hurtForceBoss = 300f;
     [SerializeField] private AudioSource appleSound;
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private Sprite spriteNormal;
@@ -31,7 +30,6 @@ public class PlayerMovement : Unit
     }
     public Vector2 moveVector;
     public Transform groundCheck;
-    public float spawnX, spawnY;
     
     private LivesBar livesBar;
     private Rigidbody2D rb;
@@ -48,12 +46,11 @@ public class PlayerMovement : Unit
 
     void Start()
     {
+        speed = 0f;
         livesBar = FindObjectOfType<LivesBar>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        spawnX = transform.position.x;
-        spawnY = transform.position.y;
     }
 
     void Update()
@@ -99,6 +96,7 @@ public class PlayerMovement : Unit
 
     private void FixedUpdate()
     {
+        rb.velocity = new Vector2(speed, rb.velocity.y);
         CheckGround();
     }
 
@@ -137,12 +135,12 @@ public class PlayerMovement : Unit
                 if (col.gameObject.transform.position.x > transform.position.x)
                 {
                     // Враг справа от меня --> я отлетаю влево
-                    rb.velocity = new Vector2(-hurtForce, rb.velocity.y);
+                    speed = -speedNormal * 1.7f;
                 }
                 else
                 {
                     // Враг слева от меня --> я отлетаю вправо
-                    rb.velocity = new Vector2(hurtForce, rb.velocity.y);
+                    speed = speedNormal * 1.7f;
                 }
             }
           
@@ -164,12 +162,12 @@ public class PlayerMovement : Unit
                 if (col.gameObject.transform.position.x > transform.position.x)
                 {
                     // Враг справа от меня --> я отлетаю влево
-                    rb.velocity = new Vector2(-hurtForceBoss, rb.velocity.y);
+                    speed = -speedNormal * 2f;
                 }
                 else
                 {
                     // Враг слева от меня --> я отлетаю вправо
-                    rb.velocity = new Vector2(hurtForceBoss, rb.velocity.y);
+                    speed = speedNormal * 2f;
                 }
             }
 
@@ -183,7 +181,31 @@ public class PlayerMovement : Unit
         isDead = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    public void OnJumpButtonDown()
+    {
+        if (isGrounded && coll.IsTouchingLayers(ground))
+        {
+            state = State.jumping;
+            jumpSound.Play();
+            rb.AddForce(Vector2.up * jumpForce);
+        }
+    }
 
+    public void OnLeftButtonDown()
+    {
+        if (speed >= 0f)
+            speed = -speedNormal;
+    }
+    public void OnRightButtonDown()
+    {
+        if (speed <= 0f)
+            speed = speedNormal;
+    }
+
+    public void OnButtonUp()
+    {
+        speed = 0f;
+    }
     private void VelocitySwitch()
     {
         if (state == State.jumping)
